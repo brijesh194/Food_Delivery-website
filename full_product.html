@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Food Delivery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & base */
+    * {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body {background:#121212;color:#fff;line-height:1.6;}
+    a {text-decoration:none;color:inherit;}
+
+    /* Header */
+    header {background:#1e1e1e;padding:15px 30px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000;}
+    .logo {font-size:1.5rem;font-weight:600;color:#ff3e00;}
+    nav {display:flex;gap:25px;align-items:center;}
+    nav a {padding:8px 12px;border-radius:6px;transition:0.3s;}
+    nav a:hover {background:#ff3e00;color:#fff;}
+
+    /* Search & Location */
+    .search-location {display:flex;gap:15px;align-items:center;}
+    .search-location input, .search-location select {padding:8px 12px;border-radius:6px;border:none;background:#2a2a2a;color:#fff;}
+    .search-location input::placeholder {color:#bbb;}
+
+    /* Hero Section */
+    .product-hero {display:flex;flex-wrap:wrap;margin:30px;gap:30px;align-items:flex-start;}
+    
+    /* Slider */
+    .slider {position:relative;width:100%;max-width:600px;margin:auto;overflow:hidden;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+    .slides {display:flex;transition:transform 0.5s ease-in-out;}
+    .slides img {width:100%;object-fit:cover;border-radius:12px;}
+    .prev, .next {position:absolute;top:50%;transform:translateY(-50%);background:#ff3e00;color:#fff;padding:10px;border:none;border-radius:50%;cursor:pointer;transition:0.3s;}
+    .prev:hover, .next:hover {background:#e63c00;}
+    .prev {left:10px;} .next {right:10px;}
+    .dots {text-align:center;margin-top:10px;}
+    .dot {display:inline-block;width:10px;height:10px;margin:0 5px;background:#ff3e00;border-radius:50%;cursor:pointer;opacity:0.5;}
+    .dot.active {opacity:1;}
+
+    .product-main {flex:1 1 400px;}
+    .product-main h1 {font-size:2rem;margin-bottom:15px;color:#ff3e00;}
+    .product-main .price {font-size:1.5rem;color:#fff;margin-bottom:10px;}
+    .product-main .description {margin-bottom:15px;color:#ccc;}
+    .product-main .rating {color:#ffcc00;margin-bottom:15px;}
+    .product-main button {padding:12px 25px;margin-right:15px;border:none;border-radius:8px;background:#ff3e00;color:#fff;font-weight:600;cursor:pointer;transition:0.3s;}
+    .product-main button:hover {background:#e63c00;}
+
+    /* Delivery Info */
+    .delivery {margin:20px 0;color:#bbb;}
+    
+    .reviews {margin:40px 30px;}
+.reviews h2 {color:#ff3e00;margin-bottom:20px;font-size:2rem;text-align:center;}
+
+.reviews-container {position:relative; display:flex; align-items:center; overflow:hidden; max-width:100%; margin:auto;}
+.reviews-slider {display:flex; gap:20px; transition:transform 0.5s ease;}
+
+.review-card {min-width:320px; background:#1e1e1e; border-radius:16px; padding:20px; box-shadow:0 6px 20px rgba(0,0,0,0.5); flex-shrink:0; transition:0.3s;}
+.review-card:hover {transform:translateY(-5px); box-shadow:0 10px 30px rgba(0,0,0,0.7);}
+
+.review-header {display:flex; align-items:center; gap:15px; margin-bottom:15px;}
+.review-header .avatar img {width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid #ff3e00;}
+.review-header .name {font-weight:600; color:#fff;}
+.stars {color:#ffcc00;}
+.comment {color:#ccc; margin-bottom:10px; font-style:italic;}
+.date {color:#888; font-size:0.85rem;}
+
+.arrow {
+  position:absolute; top:50%; transform:translateY(-50%);
+  background:rgba(255,62,0,0.9); border:none; color:#fff;
+  font-size:2rem; width:45px; height:45px; border-radius:50%;
+  cursor:pointer; z-index:10; display:flex; align-items:center; justify-content:center;
+  transition:0.3s;
+}
+.arrow:hover {background:#e63c00;}
+.left-arrow {left:10px;}
+.right-arrow {right:10px;}
+
+
+    /* Related Products */
+    .related {margin:40px 30px;}
+    .related h2 {margin-bottom:20px;color:#ff3e00;}
+    .related-cards {display:flex;overflow-x:auto;gap:20px;padding-bottom:10px;}
+    .related-card {min-width:200px;background:#1e1e1e;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.4);padding:15px;transition:0.3s;flex-shrink:0;}
+    .related-card img {width:100%;border-radius:10px;margin-bottom:10px;}
+    .related-card h3 {font-size:1.1rem;color:#fff;margin-bottom:5px;}
+    .related-card p {color:#ccc;font-size:0.9rem;margin-bottom:10px;}
+    .related-card button {padding:8px 15px;border:none;border-radius:6px;background:#ff3e00;color:#fff;cursor:pointer;transition:0.3s;}
+    .related-card button:hover {background:#e63c00;}
+
+    /* Footer */
+    footer {background:#1e1e1e;padding:25px 30px;margin-top:50px;text-align:center;color:#bbb;}
+    footer a {color:#ff3e00;margin:0 10px;transition:0.3s;}
+    footer a:hover {color:#fff;}
+    
+    /* Scrollbar for related products */
+    .related-cards::-webkit-scrollbar {height:8px;}
+    .related-cards::-webkit-scrollbar-thumb {background:#ff3e00;border-radius:4px;}
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">Foodie</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Menu</a>
+    <a href="#">Offers</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div class="search-location">
+    <input type="text" placeholder="Search products...">
+    <select>
+      <option value="">Select Location</option>
+      <option value="delhi">Delhi</option>
+      <option value="mumbai">Mumbai</option>
+      <option value="bangalore">Bangalore</option>
+    </select>
+  </div>
+</header>
+
+<!-- Product Hero -->
+<section class="product-hero">
+  <div class="product-images">
+    <div class="slider">
+      <div class="slides">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop" alt="">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop" alt="">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1200&auto=format&fit=crop" alt="">
+      </div>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+      <div class="dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  </div>
+  <div class="product-main">
+    <h1>Deluxe Burger</h1>
+    <div class="price">₹299</div>
+    <div class="rating">⭐⭐⭐⭐☆ (120 reviews)</div>
+    <div class="description">A delicious deluxe burger with fresh vegetables, cheese, and our special sauce. Perfect for lunch or dinner.</div>
+    <button>Add to Cart</button>
+    <button>Order Now</button>
+    <div class="delivery">Delivery in <span id="delivery-time">30-40 mins</span> based on your location.</div>
+  </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews">
+  <h2>Customer Reviews</h2>
+  <div class="reviews-container">
+    <button class="arrow left-arrow">&#10094;</button>
+    <div class="reviews-slider">
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ravi Sharma"></div>
+          <div>
+            <div class="name">Ravi Sharma</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="comment">“Amazing taste! The burger was fresh, juicy, and full of flavor. Highly recommend!”</div>
+        <div class="date">2 days ago</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar"><img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Priya Verma"></div>
+          <div>
+            <div class="name">Priya Verma</div>
+            <div class="stars">⭐⭐⭐⭐☆</div>
+          </div>
+        </div>
+        <div class="comment">“Loved it! The veggies were fresh and the sauce made it perfect. Will order again.”</div>
+        <div class="date">5 days ago</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar"><img src="https://randomuser.me/api/portraits/men/56.jpg" alt="Amit Kapoor"></div>
+          <div>
+            <div class="name">Amit Kapoor</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="comment">“Excellent service and delicious food. Delivery was super fast. Highly satisfied!”</div>
+        <div class="date">1 week ago</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-header">
+          <div class="avatar"><img src="https://randomuser.me/api/portraits/women/67.jpg" alt="Sneha Patel"></div>
+          <div>
+            <div class="name">Sneha Patel</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+        </div>
+        <div class="comment">“Tasty and fresh! Loved the quick delivery. Highly recommended.”</div>
+        <div class="date">3 days ago</div>
+      </div>
+    </div>
+    <button class="arrow right-arrow">&#10095;</button>
+  </div>
+</section>
+
+
+<!-- Related Products -->
+<section class="related">
+  <h2>Related Products</h2>
+  <div class="related-cards">
+    <div class="related-card">
+      <img src="https://via.placeholder.com/200x150" alt="">
+      <h3>Cheese Pizza</h3>
+      <p>Classic cheese pizza with extra cheese.</p>
+      <button>Order Now</button>
+    </div>
+    <div class="related-card">
+      <img src="https://via.placeholder.com/200x150" alt="">
+      <h3>Veg Sandwich</h3>
+      <p>Fresh vegetables with a tasty spread.</p>
+      <button>Order Now</button>
+    </div>
+    <div class="related-card">
+      <img src="https://via.placeholder.com/200x150" alt="">
+      <h3>Chicken Wings</h3>
+      <p>Spicy and crispy chicken wings.</p>
+      <button>Order Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  &copy; 2025 Foodie. All rights reserved. 
+  <a href="#">Privacy Policy</a> | 
+  <a href="#">Terms of Service</a>
+</footer>
+
+<script>
+  // Simple JS for location-based delivery time
+  const locationSelect = document.querySelector('select');
+  const deliveryTime = document.getElementById('delivery-time');
+  locationSelect.addEventListener('change', () => {
+    const loc = locationSelect.value;
+    if(loc === 'delhi') deliveryTime.textContent = '25-35 mins';
+    else if(loc === 'mumbai') deliveryTime.textContent = '30-40 mins';
+    else if(loc === 'bangalore') deliveryTime.textContent = '35-45 mins';
+    else deliveryTime.textContent = '30-40 mins';
+  });
+
+  // Slider JS
+  const slides = document.querySelector('.slides');
+  const images = document.querySelectorAll('.slides img');
+  const prev = document.querySelector('.prev');
+  const next = document.querySelector('.next');
+  const dots = document.querySelectorAll('.dot');
+  let index = 0;
+  const total = images.length;
+
+  function showSlide(i){
+    if(i>=total) index=0;
+    else if(i<0) index=total-1;
+    else index=i;
+    slides.style.transform = `translateX(-${index*100}%)`;
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[index].classList.add('active');
+  }
+
+  prev.addEventListener('click', ()=> showSlide(index-1));
+  next.addEventListener('click', ()=> showSlide(index+1));
+  dots.forEach((dot,i)=>{ dot.addEventListener('click', ()=> showSlide(i)); });
+
+  // Auto Slide
+  setInterval(()=>{ showSlide(index+1); }, 4000);
+</script>
+<script>
+const slider = document.querySelector('.reviews-slider');
+const leftArrow = document.querySelector('.left-arrow');
+const rightArrow = document.querySelector('.right-arrow');
+
+let reviewIndex = 0;
+const cards = document.querySelectorAll('.review-card');
+const cardWidth = cards[0].offsetWidth + 20; // card width + gap
+
+rightArrow.addEventListener('click', () => {
+  if(reviewIndex < cards.length - 1){
+    reviewIndex++;
+    slider.style.transform = `translateX(-${cardWidth * reviewIndex}px)`;
+  }
+});
+
+leftArrow.addEventListener('click', () => {
+  if(reviewIndex > 0){
+    reviewIndex--;
+    slider.style.transform = `translateX(-${cardWidth * reviewIndex}px)`;
+  }
+});
+</script>
+
+</body>
+</html>
