@@ -89,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $product_name   = $_POST['product_name'] ?? '';
     $product_price  = $_POST['product_price'] ?? '';
     $product_image  = $_POST['product_image'] ?? '';
+    $product_price = preg_replace('/[^0-9.]/', '', $product_price);
     $user_name      = $_POST['user_name'] ?? '';
     $user_id        = $_SESSION['user_id'];
 
@@ -120,24 +121,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
     $stmt->bind_param(
-        "issssssssssssiss",
-        $user_id,
-        $product_name,
-        $product_price,
-        $product_image,
-        $user_name,
-        $village,
-        $city,
-        $zipcode,
-        $state,
-        $payment_method,
-        $payment_status,
-        $payment_id,
-        $user_mobile,
-        $quantity,
-        $latitude,
-        $longitude
-    );
+    "isdssssssssssiss",
+    $user_id,
+    $product_name,
+    $product_price,
+    $product_image,
+    $user_name,
+    $village,
+    $city,
+    $zipcode,
+    $state,
+    $payment_method,
+    $payment_status,
+    $payment_id,
+    $user_mobile,
+    $quantity,
+    $latitude,
+    $longitude
+);
+
+
 
     if ($stmt->execute()) {
         // PHPMailer: include and send email after successful order
@@ -213,8 +216,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             \">
                 <h2 style='color:#00ff7f'>✅ Order placed successfully!</h2>
                 <p>Payment Status: <strong style='color:#ffd24d;'>$payment_status</strong></p>
+
+                <br>
+            <a href='my_orders.php' 
+               style='display:inline-block; padding:12px 24px; background:#ffd24d; color:#111; font-weight:600; text-decoration:none; border-radius:10px; transition:0.3s;'>
+                📦 View My Orders
+            </a>
             </div>
-        </div>
+        </div>  
         ";
     } else {
         echo "Error: " . $stmt->error;

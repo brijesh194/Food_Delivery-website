@@ -356,8 +356,175 @@ footer a:hover{color:#fff}
 </div>
 
 <div style="text-align:center; margin-top:20px;">
-  <a href="order_status.php" class="track-btn">Track My Order</a>
+  <a href="my_orders.php" class="track-btn"> My Order</a>
 </div>
+
+<!-- Order Form Modal -->
+<div id="orderFormModal">
+  <div class="popup-content">
+    <span class="close-btn" onclick="closeOrderForm()">×</span>
+    <h2 style="text-align:center; color:#ffd24d; margin-bottom:20px;">Place Your Order</h2>
+    <form id="orderForm" action="save_order_popup.php" method="POST" style="display:flex;flex-direction:column;gap:12px;">
+
+      <input type="hidden" id="productName" name="product_name">
+      <input type="hidden" id="productPrice" name="product_price">
+      <input type="hidden" id="productImage" name="productImageInput">
+
+      <input type="text" name="user_name" placeholder="Full Name" required>
+      <input type="text" name="village" placeholder="Village" required>
+      <input type="text" name="city" placeholder="City" required>
+      <div style="display:flex;gap:10px;">
+        <input type="text" name="state" placeholder="State" required style="flex:1;">
+        <input type="text" name="zipcode" placeholder="Zip Code" required style="flex:1;padding:12px;border-radius:10px;border:soild 1px ;outline:none;">
+      </div>
+      <input type="tel" name="user_mobile" placeholder="Mobile Number" required>
+      <select name="payment_method" required style="background: rgba(255,255,255,0.05);">
+        <option style="color: black;" value="">Payment Method</option>
+        <option style="color: #070607;"  value="Cash on Delivery">Cash on Delivery</option>
+        <option style="color: #070607;" value="UPI">UPI</option>
+        <option style="color: #070607;" value="Card">Card</option>
+      </select>
+      <input type="number" name="quantity" placeholder="Quantity" min="1" value="1" required>
+
+      <input type="hidden" id="latitude" name="latitude">
+      <input type="hidden" id="longitude" name="longitude">
+      <button type="button" class="location-btn" onclick="getLocation()">📍 Use My Current Location</button>
+
+      <button type="submit">✅ Place Order</button>
+    </form>
+  </div>
+</div>
+
+<style>
+/* Overlay background */
+#orderFormModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Glassmorphic popup with neon glow */
+#orderFormModal .popup-content {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  padding: 40px;
+  width: 90%;
+  max-width: 520px;
+  color: #fff;
+  box-shadow: 0 0 40px rgba(255, 184, 77, 0.5), 0 0 60px rgba(255, 210, 77, 0.2);
+  border: 1px solid rgba(255,255,255,0.2);
+  transform: translateY(-50px);
+  animation: slideDown 0.6s ease forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Close button */
+#orderFormModal .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffd24d;
+  cursor: pointer;
+  transition: transform 0.3s, color 0.3s;
+}
+#orderFormModal .close-btn:hover {
+  transform: rotate(90deg);
+  color: #ff9c3c;
+}
+
+/* Form inputs - transparent with neon border */
+#orderFormModal input, #orderFormModal select {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s all;
+}
+
+/* #orderFormModal select{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(255,255,255,0.5) !important;
+  color: #fff;               
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s all;
+} */
+#orderFormModal select option {
+   background: rgba(17, 17, 17, 0.6);  /* semi-transparent dark */
+  color: #fff;
+  backdrop-filter: blur(8px);         /* blur effect (glass style) */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */      /* option text white */
+}
+#orderFormModal input:focus, #orderFormModal select:focus {
+  border-color: #ffd24d;
+  box-shadow: 0 0 15px #ffd24d;
+  backdrop-filter: blur(10px);
+}
+
+/* Buttons */
+#orderFormModal button[type="submit"], #orderFormModal .location-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s all;
+  color: #111;
+}
+#orderFormModal button[type="submit"] {
+  background: linear-gradient(45deg,#ffd24d,#ffb84d);
+  box-shadow: 0 0 20px #ffd24d;
+}
+#orderFormModal button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px #ffd24d, 0 0 60px #ffb84d;
+}
+#orderFormModal .location-btn {
+  background: linear-gradient(45deg,#ff9c3c,#ffb84d);
+  box-shadow: 0 0 15px #ff9c3c;
+}
+#orderFormModal .location-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #ff9c3c, 0 0 50px #ffb84d;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes slideDown {
+  from {opacity: 0; transform: translateY(-50px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+</style>
+
+
+
 
 <style>
   .track-btn {
@@ -495,25 +662,41 @@ function checkoutAll(){
 
 renderCart();
 </script>
-
 <script>
-function orderItem(index){
-  const item = cart[index];
+ function orderItem(index){
+  const product = cart[index];
 
-  // Selected product ko checkoutItem me save karo
-  localStorage.setItem("checkoutItem", JSON.stringify(item));
+  // Set product details in hidden form
+  document.getElementById("productName").value = product.name;
+  document.getElementById("productPrice").value = product.price;
+  document.getElementById("productImage").value = product.img || "";
 
-  // Cart se remove
-  cart.splice(index, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart(); // UI update
-
-  // Checkout page pe redirect
-  window.location.href = "checkout.php";
+  // Show modal
+  document.getElementById("orderFormModal").style.display = "flex";
 }
 
 
+function closeOrderForm(){
+  document.getElementById("orderFormModal").style.display = "none";
+}
+
+// Get live location
+function getLocation(){
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(pos){
+      document.getElementById("latitude").value = pos.coords.latitude;
+      document.getElementById("longitude").value = pos.coords.longitude;
+      alert("Location added successfully ✅");
+    }, function(){
+      alert("Unable to fetch location ❌");
+    });
+  } else {
+    alert("Geolocation not supported in your browser");
+  }
+}
+
 </script>
+
 
 
 <script>

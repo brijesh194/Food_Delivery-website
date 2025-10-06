@@ -427,6 +427,7 @@ body::-webkit-scrollbar {
         <option style="color: #070607;" value="UPI">UPI</option>
         <option style="color: #070607;" value="Credit/Debit Card">Credit/Debit Card</option>
       </select>
+      <button id="payBtn">Pay with Razorpay</button>
 
       <!-- Current Location Button -->
       <button type="button" onclick="getCurrentLocation()" style="padding:10px;border-radius:8px;border:none;background:#ffb84d;color:#111;font-weight:600;cursor:pointer;">Use My Current Location</button>
@@ -482,6 +483,43 @@ body::-webkit-scrollbar {
   @keyframes modalIn {from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.getElementById('payBtn').onclick = function(e){
+    var options = {
+        "key": "rzp_test_1sKWSqkzYjOlTH", // Test Key ID
+        "amount": 50000, // amount in paise (50000 = ₹500)
+        "currency": "INR",
+        "name": "Flipcartel Store",
+        "description": "Test Order",
+        "image": "https://yourwebsite.com/logo.png",
+        "handler": function (response){
+            // Payment successful
+            // यहां save_order.php को कॉल करके DB में save करना है
+            fetch("save_order.php", {
+                method: "POST",
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                body: "payment_id="+response.razorpay_payment_id+"&product=Tomato Soup&price=500"
+            })
+            .then(res=>res.text())
+            .then(data=>{
+                alert("Order Saved: " + data);
+            });
+        },
+        "prefill": {
+            "name": "Test User",
+            "email": "test@example.com",
+            "contact": "9876543210"
+        },
+        "theme": {
+            "color": "#ffd24d"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
 <script>
   // जब भी modal open हो तब product details hidden fields में डालो
   function openOrderForm(name, price, image) {

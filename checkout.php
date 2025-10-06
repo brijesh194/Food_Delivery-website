@@ -98,6 +98,8 @@ if ($conn->connect_error) {
 <div class="checkout-container">
   <h2><i class="fa-solid fa-bag-shopping"></i> Checkout</h2>
   <form action="place_order.php" method="POST">
+
+  
     <input type="text" name="name" placeholder="Full Name" required>
     <input type="text" name="mobile" placeholder="Mobile Number" required>
 
